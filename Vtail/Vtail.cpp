@@ -54,7 +54,7 @@ CVtailApp::CVtailApp()
 
 	// TODO: replace application ID string below with unique ID string; recommended
 	// format for string is CompanyName.ProductName.SubProduct.VersionInformation
-	SetAppID(_T("Vtail.AppID.NoVersion"));
+	SetAppID(_T("Vanpt.Vtail.190129"));
 
 	// TODO: add construction code here,
 	// Place all significant initialization in InitInstance
@@ -101,7 +101,7 @@ BOOL CVtailApp::InitInstance()
 	// Change the registry key under which our settings are stored
 	// TODO: You should modify this string to be something appropriate
 	// such as the name of your company or organization
-	SetRegistryKey(_T("Local AppWizard-Generated Applications"));
+	SetRegistryKey(_T("Vanpt"));
 	LoadStdProfileSettings(4);  // Load standard INI file options (including MRU)
 
 
