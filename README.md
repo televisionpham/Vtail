@@ -5,3 +5,6 @@ A log viewer application
 - View content of log files.
 - Follow tail.
 - Word wrap
+
+# Screenshot
+![Screenshot](https://github.com/televisionpham/Vtail/blob/master/screenshots/01.png)
