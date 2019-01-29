@@ -47,8 +47,12 @@ END_MESSAGE_MAP()
 // CVtailView construction/destruction
 
 CVtailView::CVtailView()
-{
-	// TODO: add construction code here	
+{	
+	if (m_thread == NULL)
+	{
+		m_thread = AfxBeginThread(Refresh, this);
+		m_thread->m_bAutoDelete = TRUE;
+	}
 }
 
 CVtailView::~CVtailView()
@@ -144,6 +148,33 @@ BOOL CVtailView::SetWordWrap(BOOL bWordWrap)
 	return TRUE;
 }
 
+BOOL CVtailView::IsFollowTail() const
+{
+	return m_bFollowTail;
+}
+
+UINT CVtailView::Refresh(LPVOID pParam)
+{	
+	CVtailView* pView = static_cast<CVtailView*>(pParam);
+	while (true)
+	{
+		if (pView->m_bActivate)
+		{
+			CVtailDoc* pDoc = static_cast<CVtailDoc*>(pView->GetDocument());
+			pDoc->LoadFileContent(pDoc->GetFilePath());
+			if (pView->IsFollowTail())
+			{
+				pView->GetEditCtrl().SendMessage(EM_SETSEL, 0, -1);
+				pView->GetEditCtrl().SendMessage(EM_SETSEL, -1, -1);
+				pView->GetEditCtrl().SendMessage(EM_SCROLLCARET, 0, 0);
+			}
+		}
+		Sleep(5000);
+	}
+	return 0;
+}
+
+
 BOOL CVtailView::PreCreateWindow(CREATESTRUCT& cs)
 {
 	// TODO: Modify the Window class or styles here by modifying
@@ -234,7 +265,7 @@ void CVtailView::OnActivateView(BOOL bActivate, CView* pActivateView, CView* pDe
 {
 	CMainFrame* pFrame = static_cast<CMainFrame*>(AfxGetMainWnd());
 	CMFCRibbonStatusBar* pStatusBar = pFrame->GetStatusBar();
-
+	m_bActivate = bActivate;
 	if (bActivate)
 	{				
 		CMFCRibbonBaseElement* pElement = pStatusBar->GetExElement(0);
@@ -245,8 +276,8 @@ void CVtailView::OnActivateView(BOOL bActivate, CView* pActivateView, CView* pDe
 		pElement = pStatusBar->GetElement(1);
 		pElement->SetText(pDoc->GetLastModifiedTime().Format(_T("%d/%m%Y %H:%M:%S")));
 		CMainFrame* pMainFrame = static_cast<CMainFrame*>(AfxGetMainWnd());
-		SetWordWrap(pMainFrame->GetWordWrap());
-	}	
+		SetWordWrap(pMainFrame->GetWordWrap());		
+	}		
 	pStatusBar->RecalcLayout();
 	pStatusBar->RedrawWindow();
 	CEditView::OnActivateView(bActivate, pActivateView, pDeactiveView);
@@ -272,6 +303,7 @@ void CVtailView::OnOptionsFollowtail()
 {
 	CMainFrame* pMainFrame = static_cast<CMainFrame*>(AfxGetMainWnd());
 	pMainFrame->SetFollowTail(!pMainFrame->GetFollowTail());
+	m_bFollowTail = pMainFrame->GetFollowTail();
 }
 
 

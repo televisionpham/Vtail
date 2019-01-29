@@ -89,20 +89,9 @@ CString CVtailDoc::GetStrFileSize()
 	return strSize;
 }
 
-UINT CVtailDoc::Refresh(LPVOID pParam)
+int CVtailDoc::GetLinesNumber() const
 {
-	CVtailDoc* pDoc = static_cast<CVtailDoc*>(pParam);
-	while (true)
-	{
-		if (pDoc->m_bIsClosing)
-		{
-			break;
-		}
-		pDoc->LoadFileContent(pDoc->GetFilePath());
-		Sleep(5000);
-	}
-	pDoc->m_bThreadIsRunning = FALSE;
-	return TRUE;
+	return m_nLines;
 }
 
 void CVtailDoc::Serialize(CArchive& ar)
@@ -112,7 +101,7 @@ void CVtailDoc::Serialize(CArchive& ar)
 	}
 	else 
 	{
-		//LoadFileContent(ar.GetFile()->GetFilePath());
+		LoadFileContent(ar.GetFile()->GetFilePath());
 	}
 }
 
@@ -186,7 +175,7 @@ void CVtailDoc::Dump(CDumpContext& dc) const
 // Load file content
 void CVtailDoc::LoadFileContent(CString strFilePath)
 {
-
+	m_nLines = 0;
 	m_strFilePath = strFilePath;
 	FILE *fStream;
 	errno_t errCode = _tfopen_s(&fStream, m_strFilePath, _T("r, ccs=UNICODE"));
@@ -204,6 +193,7 @@ void CVtailDoc::LoadFileContent(CString strFilePath)
 	while (file.ReadString(strLine))
 	{
 		strContent += strLine + _T("\r\n");
+		m_nLines += 1;
 	}
 	file.Close();	
 	BOOL bResult = ::SetWindowText(reinterpret_cast<CEditView*>(m_viewList.GetHead())->GetSafeHwnd(), strContent);
@@ -215,20 +205,4 @@ void CVtailDoc::OnCloseDocument()
 	// TODO: Add your specialized code here and/or call the base class
 
 	CDocument::OnCloseDocument();
-}
-
-
-BOOL CVtailDoc::OnOpenDocument(LPCTSTR lpszPathName)
-{
-	if (!CDocument::OnOpenDocument(lpszPathName))
-		return FALSE;
-
-	m_strFilePath = lpszPathName;
-	if (m_thread == NULL)
-	{
-		m_thread = AfxBeginThread(Refresh, this);
-		m_thread->m_bAutoDelete = TRUE;
-	}
-
-	return TRUE;
 }

@@ -29,11 +29,10 @@ public:
 public:
 	CString GetFilePath() { return m_strFilePath; }
 	CString GetStrFileSize();
-	CTime GetLastModifiedTime() { return m_lastModifiedTime; }
-	static UINT Refresh(LPVOID pParam);
-	BOOL m_bIsClosing{ FALSE };
-	CWinThread* m_thread{ NULL };
+	CTime GetLastModifiedTime() { return m_lastModifiedTime; }	
+	BOOL m_bIsClosing{ FALSE };	
 	BOOL m_bThreadIsRunning{ FALSE };
+	int GetLinesNumber() const;
 
 // Overrides
 public:
@@ -72,9 +71,10 @@ private:
 	CString m_strFilePath;
 	ULONGLONG m_ullFileSize;
 	CTime m_lastModifiedTime;
+	int m_nLines;
+
 public:
 	// Load file content
 	void LoadFileContent(CString strFilePath);
-	virtual void OnCloseDocument();
-	virtual BOOL OnOpenDocument(LPCTSTR lpszPathName);
+	virtual void OnCloseDocument();	
 };

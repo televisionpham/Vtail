@@ -24,11 +24,18 @@ protected: // create from serialization only
 // Attributes
 public:
 	CVtailDoc* GetDocument() const;
+private:	
+	BOOL m_bFollowTail{ FALSE };
+	CWinThread* m_thread{ NULL };
+	BOOL m_bActivate{ FALSE };
 
 // Operations
 public:
 	BOOL IsWordWrap() const;
 	BOOL SetWordWrap(BOOL bWordWrap);
+	BOOL IsFollowTail() const;
+private:
+	static UINT Refresh(LPVOID pParam);
 
 // Overrides
 public:
