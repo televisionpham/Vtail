@@ -108,8 +108,5 @@
     <Image Include="res\Toolbar256.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="C:\Users\vanpt.DS\Desktop\iconfinder_text-x-log_24979.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
   </ItemGroup>
 </Project>

@@ -220,7 +220,6 @@
     <ResourceCompile Include="Vtail.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="C:\Users\vanpt.DS\Desktop\iconfinder_text-x-log_24979.ico" />
     <Image Include="res\buttons.bmp" />
     <Image Include="res\filelarge.bmp" />
     <Image Include="res\filesmall.bmp" />

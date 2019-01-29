@@ -72,7 +72,7 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDR_MAINFRAME           ICON                    "C:\\Users\\vanpt.DS\\Desktop\\iconfinder_text-x-log_24979.ico"
+IDR_MAINFRAME           ICON                    "D:\Vanpt\Projects\Vtail\icons\\iconfinder_text-x-log_24979.ico"
 
 IDR_UntitledTYPE        ICON                    "res\\VtailDoc.ico"
 
